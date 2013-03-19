@@ -1,4 +1,4 @@
 dropwizard-todo
 ===============
 
-Todo list backend done with Dropwizard framework.
+Todo-list App backend done with Dropwizard framework.
