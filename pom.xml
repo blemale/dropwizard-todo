@@ -17,7 +17,12 @@
         <dependency>
             <groupId>com.yammer.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
-            <version>0.6.1</version>
+            <version>0.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.dropwizard</groupId>
+            <artifactId>dropwizard-testing</artifactId>
+            <version>0.6.2</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
