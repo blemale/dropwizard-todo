@@ -1,5 +1,6 @@
 package fr.blemale.dropwizard.todo.api;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ public class TodoCreationRequest {
     @JsonProperty
     private final String content;
 
+    @JsonCreator
     public TodoCreationRequest(@JsonProperty("title") String title, @JsonProperty("content") String content) {
         this.title = title;
         this.content = content;

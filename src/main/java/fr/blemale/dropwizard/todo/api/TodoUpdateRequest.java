@@ -1,5 +1,6 @@
 package fr.blemale.dropwizard.todo.api;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ public class TodoUpdateRequest {
     @JsonProperty
     private final String content;
 
+    @JsonCreator
     public TodoUpdateRequest(@JsonProperty("id") long id, @JsonProperty("title") String title, @JsonProperty("content") String content) {
         this.id = id;
         this.title = title;

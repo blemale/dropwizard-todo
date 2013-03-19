@@ -1,5 +1,6 @@
 package fr.blemale.dropwizard.todo.api;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ExternalTodo {
@@ -12,6 +13,7 @@ public class ExternalTodo {
     @JsonProperty
     private final String selfUrl;
 
+    @JsonCreator
     public ExternalTodo(@JsonProperty("id") long id, @JsonProperty("title") String title, @JsonProperty("content") String content, @JsonProperty("selfUrl") String selfUrl) {
         this.id = id;
         this.title = title;
