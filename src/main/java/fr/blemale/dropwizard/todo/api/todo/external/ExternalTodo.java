@@ -3,13 +3,18 @@ package fr.blemale.dropwizard.todo.api.todo.external;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.NotNull;
+
 public class ExternalTodo {
+    @NotNull
     @JsonProperty
     private final long id;
+    @NotNull
     @JsonProperty
     private final String title;
     @JsonProperty
     private final String content;
+    @NotNull
     @JsonProperty
     private final String selfUrl;
 
@@ -35,5 +40,29 @@ public class ExternalTodo {
 
     public String getSelfUrl() {
         return selfUrl;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ExternalTodo that = (ExternalTodo) o;
+
+        if (id != that.id) return false;
+        if (content != null ? !content.equals(that.content) : that.content != null) return false;
+        if (!selfUrl.equals(that.selfUrl)) return false;
+        if (!title.equals(that.title)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + title.hashCode();
+        result = 31 * result + (content != null ? content.hashCode() : 0);
+        result = 31 * result + selfUrl.hashCode();
+        return result;
     }
 }
