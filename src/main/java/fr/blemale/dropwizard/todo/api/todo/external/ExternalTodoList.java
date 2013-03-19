@@ -1,4 +1,4 @@
-package fr.blemale.dropwizard.todo.api;
+package fr.blemale.dropwizard.todo.api.todo.external;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

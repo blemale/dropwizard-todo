@@ -1,28 +1,21 @@
-package fr.blemale.dropwizard.todo.api;
+package fr.blemale.dropwizard.todo.api.todo.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotNull;
 
-public class TodoUpdateRequest {
+public class TodoCreationRequest {
     @NotNull
-    @JsonProperty
-    private final long id;
     @JsonProperty
     private final String title;
     @JsonProperty
     private final String content;
 
     @JsonCreator
-    public TodoUpdateRequest(@JsonProperty("id") long id, @JsonProperty("title") String title, @JsonProperty("content") String content) {
-        this.id = id;
+    public TodoCreationRequest(@JsonProperty("title") String title, @JsonProperty("content") String content) {
         this.title = title;
         this.content = content;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getTitle() {
