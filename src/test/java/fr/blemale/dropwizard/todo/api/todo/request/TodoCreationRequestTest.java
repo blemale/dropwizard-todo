@@ -11,7 +11,7 @@ public class TodoCreationRequestTest {
     @Test
     public void consumesTheExpectedJsonWithAllFields() throws Exception {
         TodoCreationRequest todoCreationRequest = new TodoCreationRequest("title", "content");
-        assertThat("parsing a valid API representation produces a person",
+        assertThat("parsing a valid API representation produces a TodoCreationRequest",
                 fromJson(jsonFixture("fixtures/todoCreationRequest.json"), TodoCreationRequest.class),
                 is(todoCreationRequest));
     }
@@ -19,7 +19,7 @@ public class TodoCreationRequestTest {
     @Test
     public void consumesTheExpectedJsonWithMandatoryFields() throws Exception {
         TodoCreationRequest todoCreationRequest = new TodoCreationRequest("title", null);
-        assertThat("parsing a valid API representation with only mandatory fields produces a person",
+        assertThat("parsing a valid API representation with only mandatory fields produces a TodoCreationRequest",
                 fromJson(jsonFixture("fixtures/todoCreationRequestWithOnlyMandatory.json"), TodoCreationRequest.class),
                 is(todoCreationRequest));
     }
