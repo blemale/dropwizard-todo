@@ -10,10 +10,10 @@ import static org.junit.Assert.assertThat;
 public class ExternalTodoTest {
     @Test
     public void producesTheExpectedJson() throws Exception {
-        ExternalTodo externalTodoList = new ExternalTodo(1L, "title", "content", "selfUrl");
+        ExternalTodo externalTodo = new ExternalTodo(1L, "title", "content", "selfUrl");
 
         assertThat("rendering a externalTodo as JSON produces a valid API representation",
-                asJson(externalTodoList),
+                asJson(externalTodo),
                 is(jsonFixture("fixtures/externalTodo.json")));
     }
 }
