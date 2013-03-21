@@ -1,14 +1,13 @@
 package fr.blemale.dropwizard.todo.core;
 
-import javax.validation.constraints.NotNull;
+import com.google.common.base.Optional;
 
 public class Todo {
     private final long id;
-    @NotNull
     private final String title;
-    private final String content;
+    private final Optional<String> content;
 
-    public Todo(long id, String title, String content) {
+    public Todo(long id, String title, Optional<String> content) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -22,7 +21,7 @@ public class Todo {
         return title;
     }
 
-    public String getContent() {
+    public Optional<String> getContent() {
         return content;
     }
 

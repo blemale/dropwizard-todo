@@ -2,8 +2,11 @@ package fr.blemale.dropwizard.todo.api.todo.external;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.blemale.dropwizard.todo.core.Todo;
+import fr.blemale.dropwizard.todo.resources.TodoResource;
 
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.core.UriBuilder;
 
 public class ExternalTodo {
     @NotNull
@@ -52,9 +55,8 @@ public class ExternalTodo {
         if (id != that.id) return false;
         if (content != null ? !content.equals(that.content) : that.content != null) return false;
         if (!selfUrl.equals(that.selfUrl)) return false;
-        if (!title.equals(that.title)) return false;
+        return title.equals(that.title);
 
-        return true;
     }
 
     @Override
@@ -64,5 +66,15 @@ public class ExternalTodo {
         result = 31 * result + (content != null ? content.hashCode() : 0);
         result = 31 * result + selfUrl.hashCode();
         return result;
+    }
+
+    public static class Mapper {
+        public ExternalTodo fromTodo(Todo todo) {
+            return new ExternalTodo(
+                    todo.getId(),
+                    todo.getTitle(),
+                    todo.getContent().or(""),
+                    UriBuilder.fromResource(TodoResource.class).build(todo.getId()).getPath());
+        }
     }
 }
