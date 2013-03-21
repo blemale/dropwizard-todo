@@ -2,24 +2,22 @@ package fr.blemale.dropwizard.todo.api.todo.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 public class TodoUpdateRequest {
-    @JsonProperty
-    private final long id;
+    @NotBlank
+    @Length(min = 1, max = 50)
     @JsonProperty
     private final String title;
+    @Length(max = 500)
     @JsonProperty
     private final String content;
 
     @JsonCreator
-    public TodoUpdateRequest(@JsonProperty("id") long id, @JsonProperty("title") String title, @JsonProperty("content") String content) {
-        this.id = id;
+    public TodoUpdateRequest(@JsonProperty("title") String title, @JsonProperty("content") String content) {
         this.title = title;
         this.content = content;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getTitle() {
@@ -37,17 +35,14 @@ public class TodoUpdateRequest {
 
         TodoUpdateRequest that = (TodoUpdateRequest) o;
 
-        if (id != that.id) return false;
         if (content != null ? !content.equals(that.content) : that.content != null) return false;
-        if (title != null ? !title.equals(that.title) : that.title != null) return false;
+        return !(title != null ? !title.equals(that.title) : that.title != null);
 
-        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (title != null ? title.hashCode() : 0);
+        int result = title != null ? title.hashCode() : 0;
         result = 31 * result + (content != null ? content.hashCode() : 0);
         return result;
     }

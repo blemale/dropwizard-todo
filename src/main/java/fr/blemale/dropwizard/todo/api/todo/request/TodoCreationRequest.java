@@ -2,20 +2,23 @@ package fr.blemale.dropwizard.todo.api.todo.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.validation.constraints.NotNull;
+import com.google.common.base.Strings;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 public class TodoCreationRequest {
-    @NotNull
+    @NotBlank
+    @Length(min = 1, max = 50)
     @JsonProperty
     private final String title;
+    @Length(max = 500)
     @JsonProperty
     private final String content;
 
     @JsonCreator
     public TodoCreationRequest(@JsonProperty("title") String title, @JsonProperty("content") String content) {
         this.title = title;
-        this.content = content;
+        this.content = Strings.emptyToNull(content);
     }
 
     public String getTitle() {
@@ -34,9 +37,8 @@ public class TodoCreationRequest {
         TodoCreationRequest that = (TodoCreationRequest) o;
 
         if (content != null ? !content.equals(that.content) : that.content != null) return false;
-        if (!title.equals(that.title)) return false;
+        return title.equals(that.title);
 
-        return true;
     }
 
     @Override

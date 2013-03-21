@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
 public class TodoUpdateRequestTest {
     @Test
     public void consumesTheExpectedJsonWithAllFields() throws Exception {
-        TodoUpdateRequest todoUpdateRequest = new TodoUpdateRequest(1L, "title", "content");
+        TodoUpdateRequest todoUpdateRequest = new TodoUpdateRequest("title", "content");
         assertThat("parsing a valid API representation produces a TodoUpdateRequest",
                 fromJson(jsonFixture("fixtures/todoUpdateRequest.json"), TodoUpdateRequest.class),
                 is(todoUpdateRequest));
@@ -18,7 +18,7 @@ public class TodoUpdateRequestTest {
 
     @Test
     public void consumesTheExpectedJsonWithMandatoryFields() throws Exception {
-        TodoUpdateRequest todoUpdateRequest = new TodoUpdateRequest(1, null, null);
+        TodoUpdateRequest todoUpdateRequest = new TodoUpdateRequest("title", null);
         assertThat("parsing a valid API representation with only mandatory fields produces a TodoUpdateRequest",
                 fromJson(jsonFixture("fixtures/todoUpdateRequestWithOnlyMandatory.json"), TodoUpdateRequest.class),
                 is(todoUpdateRequest));
