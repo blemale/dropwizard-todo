@@ -32,9 +32,9 @@ public class DummyTodoDAOTest {
         Todo newTodo = TodoBuilder.aTodo(1L, "title").withContent(Optional.of("content")).build();
         Todo expectedTodo = TodoBuilder.aTodo(newTodo).withId(0L).build();
 
-        Todo currentTodo = dummyTodoDAO.createTodo(newTodo);
+        Todo actualTodo = dummyTodoDAO.createTodo(newTodo);
 
-        assertThat("creating a new Todo returns the same todo with a valid id", currentTodo, is(expectedTodo));
+        assertThat("creating a new Todo returns the same todo with a valid id", actualTodo, is(expectedTodo));
     }
 
     @Test
@@ -44,9 +44,9 @@ public class DummyTodoDAOTest {
         Optional<Todo> expectedTodo = Optional.of(updatedTodo);
 
         dummyTodoDAO.createTodo(newTodo);
-        Optional<Todo> currentTodo = dummyTodoDAO.updateTodo(updatedTodo);
+        Optional<Todo> actualTodo = dummyTodoDAO.updateTodo(updatedTodo);
 
-        assertThat("updating an existing Todo returns a present updated Todo", currentTodo, is(expectedTodo));
+        assertThat("updating an existing Todo returns a present updated Todo", actualTodo, is(expectedTodo));
     }
 
 
@@ -55,18 +55,18 @@ public class DummyTodoDAOTest {
         Todo updatedTodo = TodoBuilder.aTodo(0L, "updatedTitle").withContent(Optional.of("updatedContent")).build();
         Optional<Todo> expectedTodo = Optional.absent();
 
-        Optional<Todo> currentTodo = dummyTodoDAO.updateTodo(updatedTodo);
+        Optional<Todo> actualTodo = dummyTodoDAO.updateTodo(updatedTodo);
 
-        assertThat("updating a non existing Todo returns an absent Todo", currentTodo, is(expectedTodo));
+        assertThat("updating a non existing Todo returns an absent Todo", actualTodo, is(expectedTodo));
     }
 
     @Test
     public void getTodosWithNoTodos() {
         List<Todo> expectedTodos = Collections.EMPTY_LIST;
 
-        List<Todo> currentTodos = dummyTodoDAO.getTodos();
+        List<Todo> actualTodos = dummyTodoDAO.getTodos();
 
-        assertThat("getting todos when any todo created returns an empty list", currentTodos, is(expectedTodos));
+        assertThat("getting todos when any todo created returns an empty list", actualTodos, is(expectedTodos));
     }
 
     @Test
@@ -76,9 +76,9 @@ public class DummyTodoDAOTest {
 
         dummyTodoDAO.createTodo(newTodo0);
         dummyTodoDAO.createTodo(newTodo1);
-        List<Todo> currentTodos = dummyTodoDAO.getTodos();
+        List<Todo> actualTodos = dummyTodoDAO.getTodos();
 
-        assertThat("getting todos when two Todo are created returns a list with these two Todos", currentTodos, hasItems(newTodo0, newTodo1));
+        assertThat("getting todos when two Todo are created returns a list with these two Todos", actualTodos, hasItems(newTodo0, newTodo1));
     }
 
     @Test
@@ -88,9 +88,9 @@ public class DummyTodoDAOTest {
         Optional<Todo> expectedTodo = Optional.of(newTodo);
 
         dummyTodoDAO.createTodo(newTodo);
-        Optional<Todo> currentTodo = dummyTodoDAO.getTodo(id);
+        Optional<Todo> actualTodo = dummyTodoDAO.getTodo(id);
 
-        assertThat("getting an existing todo returns the present todo", currentTodo, is(expectedTodo));
+        assertThat("getting an existing todo returns the present todo", actualTodo, is(expectedTodo));
     }
 
     @Test
@@ -98,8 +98,8 @@ public class DummyTodoDAOTest {
         long id = 0L;
         Optional<Todo> expectedTodo = Optional.absent();
 
-        Optional<Todo> currentTodo = dummyTodoDAO.getTodo(id);
+        Optional<Todo> actualTodo = dummyTodoDAO.getTodo(id);
 
-        assertThat("getting a non existing todo returns an absent todo", currentTodo, is(expectedTodo));
+        assertThat("getting a non existing todo returns an absent todo", actualTodo, is(expectedTodo));
     }
 }
