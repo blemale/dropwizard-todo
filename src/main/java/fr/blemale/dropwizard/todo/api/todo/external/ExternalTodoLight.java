@@ -63,7 +63,7 @@ public class ExternalTodoLight {
             return new ExternalTodoLight(
                     todo.getId(),
                     todo.getTitle(),
-                    UriBuilder.fromResource(TodoResource.class).build(todo.getId()).getPath());
+                    UriBuilder.fromResource(TodoResource.class).path(TodoResource.class, "getTodo").build(todo.getId()).getPath());
         }
     }
 }

@@ -74,7 +74,7 @@ public class ExternalTodo {
                     todo.getId(),
                     todo.getTitle(),
                     todo.getContent().or(""),
-                    UriBuilder.fromResource(TodoResource.class).build(todo.getId()).getPath());
+                    UriBuilder.fromResource(TodoResource.class).path(TodoResource.class, "getTodo").build(todo.getId()).getPath());
         }
     }
 }
