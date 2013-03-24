@@ -8,6 +8,9 @@ import fr.blemale.dropwizard.todo.jdbi.TodoDAO;
 import fr.blemale.dropwizard.todo.resources.TodoResource;
 
 public class TodoService extends Service<TodoConfiguration> {
+    public static void main(String[] args) throws Exception {
+        new TodoService().run(args);
+    }
 
     @Override
     public void initialize(Bootstrap<TodoConfiguration> bootstrap) {
