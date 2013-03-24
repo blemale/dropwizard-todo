@@ -10,9 +10,9 @@ import org.junit.Test;
 import java.util.Collections;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class DummyTodoDAOTest {
     private DummyTodoDAO dummyTodoDAO;
@@ -78,7 +78,10 @@ public class DummyTodoDAOTest {
         dummyTodoDAO.createTodo(newTodo1);
         List<Todo> actualTodos = dummyTodoDAO.getTodos();
 
-        assertThat("getting todos when two Todo are created returns a list with these two Todos", actualTodos, hasItems(newTodo0, newTodo1));
+        // Compilation failed with javac not with IntelliJ ?! It should be a Hamcrest bug.
+        // assertThat("getting todos when two Todo are created returns a list with these two Todos", actualTodos, hasItems(newTodo0, newTodo1));
+        // Workaround
+        assertTrue("getting todos when two Todo are created returns a list with these two Todos", actualTodos.contains(newTodo0) && actualTodos.contains(newTodo1));
     }
 
     @Test
