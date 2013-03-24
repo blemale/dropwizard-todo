@@ -2,6 +2,7 @@ package fr.blemale.dropwizard.todo.resources;
 
 import com.google.common.base.Optional;
 import com.yammer.dropwizard.jersey.params.LongParam;
+import com.yammer.metrics.annotation.Timed;
 import fr.blemale.dropwizard.todo.api.todo.external.ExternalTodo;
 import fr.blemale.dropwizard.todo.api.todo.external.ExternalTodoLight;
 import fr.blemale.dropwizard.todo.api.todo.external.ExternalTodoList;
@@ -26,17 +27,20 @@ public class TodoResource {
         this.todoDAO = todoDAO;
     }
 
+    @Timed
     @GET
     public ExternalTodoList getTodos() {
         return new ExternalTodoList.Mapper().fromTodoList(this.todoDAO.getTodos());
     }
 
+    @Timed
     @POST
     public ExternalTodoLight createTodo(@Valid TodoCreationRequest todoCreationRequest) {
         Todo createdTodo = this.todoDAO.createTodo(new TodoCreationRequest.Mapper().toTodo(todoCreationRequest));
         return new ExternalTodoLight.Mapper().fromTodo(createdTodo);
     }
 
+    @Timed
     @Path("{id}")
     @GET
     public ExternalTodo getTodo(@PathParam("id") LongParam id) {
@@ -48,6 +52,7 @@ public class TodoResource {
         }
     }
 
+    @Timed
     @Path("{id}")
     @PUT
     public ExternalTodoLight updateTodo(@PathParam("id") LongParam id, @Valid TodoUpdateRequest todoUpdateRequest) {
