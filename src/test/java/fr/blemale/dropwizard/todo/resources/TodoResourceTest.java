@@ -78,8 +78,7 @@ public class TodoResourceTest {
     public void updateTodoWithANonExistingTodo() {
         TodoUpdateRequest todoCreationRequest = new TodoUpdateRequest("title", null);
         Todo todo = TodoBuilder.aTodo(0L, "title").build();
-        Optional<Todo> absentTodo = Optional.absent();
-        when(this.todoDAO.updateTodo(todo)).thenReturn(absentTodo);
+        when(this.todoDAO.updateTodo(todo)).thenReturn(Optional.<Todo>absent());
 
         this.todoResource.updateTodo(new LongParam("0"), todoCreationRequest);
     }
@@ -99,8 +98,7 @@ public class TodoResourceTest {
     @Test(expected = WebApplicationException.class)
     public void getTodoWithANonId() {
         long id = 0L;
-        Optional<Todo> absentTodo = Optional.absent();
-        when(this.todoDAO.getTodo(id)).thenReturn(absentTodo);
+        when(this.todoDAO.getTodo(id)).thenReturn(Optional.<Todo>absent());
 
         this.todoResource.getTodo(new LongParam(Long.toString(id)));
     }
