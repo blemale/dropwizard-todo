@@ -2,6 +2,8 @@ package fr.blemale.dropwizard.todo.api.todo.external;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.Lists;
+import fr.blemale.dropwizard.todo.core.Todo;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -35,5 +37,16 @@ public class ExternalTodoList {
     @Override
     public int hashCode() {
         return todos.hashCode();
+    }
+
+    public static class Mapper {
+        public ExternalTodoList fromTodoList(List<Todo> todos) {
+            ExternalTodoLight.Mapper mapper = new ExternalTodoLight.Mapper();
+            List<ExternalTodoLight> externalTodoLights = Lists.newArrayList();
+            for (Todo todo : todos) {
+                externalTodoLights.add(mapper.fromTodo(todo));
+            }
+            return new ExternalTodoList(externalTodoLights);
+        }
     }
 }

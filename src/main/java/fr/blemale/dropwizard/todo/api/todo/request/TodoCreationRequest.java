@@ -2,7 +2,9 @@ package fr.blemale.dropwizard.todo.api.todo.request;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Optional;
 import com.google.common.base.Strings;
+import fr.blemale.dropwizard.todo.core.Todo;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -46,5 +48,11 @@ public class TodoCreationRequest {
         int result = title.hashCode();
         result = 31 * result + (content != null ? content.hashCode() : 0);
         return result;
+    }
+
+    public static class Mapper {
+        public Todo toTodo(TodoCreationRequest todoCreationRequest) {
+            return new Todo(0, todoCreationRequest.getTitle(), Optional.fromNullable(todoCreationRequest.getContent()));
+        }
     }
 }
