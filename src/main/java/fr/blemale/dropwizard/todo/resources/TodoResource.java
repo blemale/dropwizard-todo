@@ -1,6 +1,7 @@
 package fr.blemale.dropwizard.todo.resources;
 
 import com.google.common.base.Optional;
+import com.yammer.dropwizard.auth.Auth;
 import com.yammer.dropwizard.jersey.params.LongParam;
 import com.yammer.metrics.annotation.Timed;
 import fr.blemale.dropwizard.todo.api.todo.external.ExternalTodo;
@@ -9,6 +10,7 @@ import fr.blemale.dropwizard.todo.api.todo.external.ExternalTodoList;
 import fr.blemale.dropwizard.todo.api.todo.request.TodoCreationRequest;
 import fr.blemale.dropwizard.todo.api.todo.request.TodoUpdateRequest;
 import fr.blemale.dropwizard.todo.core.Todo;
+import fr.blemale.dropwizard.todo.core.User;
 import fr.blemale.dropwizard.todo.jdbi.TodoDAO;
 
 import javax.validation.Valid;
@@ -29,13 +31,13 @@ public class TodoResource {
 
     @Timed
     @GET
-    public ExternalTodoList getTodos() {
+    public ExternalTodoList getTodos(@Auth User user) {
         return new ExternalTodoList.Mapper().fromTodoList(this.todoDAO.getTodos());
     }
 
     @Timed
     @POST
-    public ExternalTodoLight createTodo(@Valid TodoCreationRequest todoCreationRequest) {
+    public ExternalTodoLight createTodo(@Auth User user, @Valid TodoCreationRequest todoCreationRequest) {
         Todo createdTodo = this.todoDAO.createTodo(new TodoCreationRequest.Mapper().toTodo(todoCreationRequest));
         return new ExternalTodoLight.Mapper().fromTodo(createdTodo);
     }
@@ -43,7 +45,7 @@ public class TodoResource {
     @Timed
     @Path("{id}")
     @GET
-    public ExternalTodo getTodo(@PathParam("id") LongParam id) {
+    public ExternalTodo getTodo(@Auth User user, @PathParam("id") LongParam id) {
         Optional<Todo> todo = this.todoDAO.getTodo(id.get());
         if (todo.isPresent()) {
             return new ExternalTodo.Mapper().fromTodo(todo.get());
@@ -55,7 +57,7 @@ public class TodoResource {
     @Timed
     @Path("{id}")
     @PUT
-    public ExternalTodoLight updateTodo(@PathParam("id") LongParam id, @Valid TodoUpdateRequest todoUpdateRequest) {
+    public ExternalTodoLight updateTodo(@Auth User user, @PathParam("id") LongParam id, @Valid TodoUpdateRequest todoUpdateRequest) {
         Todo updatedTodo = new TodoUpdateRequest.Mapper().toTodo(id.get(), todoUpdateRequest);
         Optional<Todo> todo = this.todoDAO.updateTodo(updatedTodo);
         if (todo.isPresent()) {
