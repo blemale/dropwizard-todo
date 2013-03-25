@@ -1,6 +1,7 @@
 package fr.blemale.dropwizard.todo.auth;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Strings;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
 import com.yammer.dropwizard.auth.basic.BasicCredentials;
@@ -16,7 +17,7 @@ public class DummyAuthenticator implements Authenticator<BasicCredentials, User>
 
     @Override
     public Optional<User> authenticate(BasicCredentials credentials) throws AuthenticationException {
-        if (password.equals(credentials.getPassword())) {
+        if (password.equals(credentials.getPassword()) && !Strings.isNullOrEmpty(credentials.getUsername())) {
             return Optional.of(User.Builder.anUser(credentials.getUsername()).build());
         }
         return Optional.absent();
