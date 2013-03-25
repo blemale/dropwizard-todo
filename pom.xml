@@ -38,7 +38,7 @@
             <groupId>com.yammer.dropwizard</groupId>
             <artifactId>dropwizard-auth</artifactId>
             <version>${dropwizard.version}</version>
-            <scope>test</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
