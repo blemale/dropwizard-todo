@@ -1,2 +1,4 @@
+password: "pwd"
+
 http:
     rootPath: "/api/*"
