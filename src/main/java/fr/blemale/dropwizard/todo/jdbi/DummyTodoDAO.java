@@ -4,7 +4,6 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import fr.blemale.dropwizard.todo.core.Todo;
-import fr.blemale.dropwizard.todo.core.TodoBuilder;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,7 @@ public class DummyTodoDAO implements TodoDAO {
 
     @Override
     public Todo createTodo(Todo todo) {
-        Todo newTodo = TodoBuilder.aTodo(todo).withId(currentId.getAndIncrement()).build();
+        Todo newTodo = Todo.Builder.aTodo(todo).withId(currentId.getAndIncrement()).build();
         todoStore.put(newTodo.getId(), newTodo);
         return newTodo;
     }

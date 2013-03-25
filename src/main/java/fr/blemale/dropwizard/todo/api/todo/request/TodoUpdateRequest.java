@@ -51,7 +51,7 @@ public class TodoUpdateRequest {
 
     public static class Mapper {
         public Todo toTodo(long id, TodoUpdateRequest todoUpdateRequest) {
-            return new Todo(id, todoUpdateRequest.getTitle(), Optional.fromNullable(todoUpdateRequest.getContent()));
+            return Todo.Builder.aTodo(id, todoUpdateRequest.getTitle()).withContent(Optional.fromNullable(todoUpdateRequest.getContent())).build();
         }
     }
 }

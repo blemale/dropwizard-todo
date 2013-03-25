@@ -52,7 +52,7 @@ public class TodoCreationRequest {
 
     public static class Mapper {
         public Todo toTodo(TodoCreationRequest todoCreationRequest) {
-            return new Todo(0, todoCreationRequest.getTitle(), Optional.fromNullable(todoCreationRequest.getContent()));
+            return Todo.Builder.aTodo(0, todoCreationRequest.getTitle()).withContent(Optional.fromNullable(todoCreationRequest.getContent())).build();
         }
     }
 }

@@ -2,7 +2,6 @@ package fr.blemale.dropwizard.todo.jdbi;
 
 import com.google.common.base.Optional;
 import fr.blemale.dropwizard.todo.core.Todo;
-import fr.blemale.dropwizard.todo.core.TodoBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,8 +28,8 @@ public class DummyTodoDAOTest {
 
     @Test
     public void createTodo() {
-        Todo newTodo = TodoBuilder.aTodo(1L, "title").withContent(Optional.of("content")).build();
-        Todo expectedTodo = TodoBuilder.aTodo(newTodo).withId(0L).build();
+        Todo newTodo = Todo.Builder.aTodo(1L, "title").withContent(Optional.of("content")).build();
+        Todo expectedTodo = Todo.Builder.aTodo(newTodo).withId(0L).build();
 
         Todo actualTodo = dummyTodoDAO.createTodo(newTodo);
 
@@ -39,8 +38,8 @@ public class DummyTodoDAOTest {
 
     @Test
     public void updateTodoWithAnExistingTodo() {
-        Todo newTodo = TodoBuilder.aTodo(0L, "title").withContent(Optional.of("content")).build();
-        Todo updatedTodo = TodoBuilder.aTodo(newTodo).withTitle("updatedTodo").withContent(Optional.of("updatedContent")).build();
+        Todo newTodo = Todo.Builder.aTodo(0L, "title").withContent(Optional.of("content")).build();
+        Todo updatedTodo = Todo.Builder.aTodo(newTodo).withTitle("updatedTodo").withContent(Optional.of("updatedContent")).build();
         Optional<Todo> expectedTodo = Optional.of(updatedTodo);
 
         dummyTodoDAO.createTodo(newTodo);
@@ -52,7 +51,7 @@ public class DummyTodoDAOTest {
 
     @Test
     public void updateTodoWithANonExistingTodo() {
-        Todo updatedTodo = TodoBuilder.aTodo(0L, "updatedTitle").withContent(Optional.of("updatedContent")).build();
+        Todo updatedTodo = Todo.Builder.aTodo(0L, "updatedTitle").withContent(Optional.of("updatedContent")).build();
         Optional<Todo> expectedTodo = Optional.absent();
 
         Optional<Todo> actualTodo = dummyTodoDAO.updateTodo(updatedTodo);
@@ -71,8 +70,8 @@ public class DummyTodoDAOTest {
 
     @Test
     public void getTodosWhithTodos() {
-        Todo newTodo0 = TodoBuilder.aTodo(0L, "title0").withContent(Optional.of("content0")).build();
-        Todo newTodo1 = TodoBuilder.aTodo(1L, "title1").withContent(Optional.of("content1")).build();
+        Todo newTodo0 = Todo.Builder.aTodo(0L, "title0").withContent(Optional.of("content0")).build();
+        Todo newTodo1 = Todo.Builder.aTodo(1L, "title1").withContent(Optional.of("content1")).build();
 
         dummyTodoDAO.createTodo(newTodo0);
         dummyTodoDAO.createTodo(newTodo1);
@@ -87,7 +86,7 @@ public class DummyTodoDAOTest {
     @Test
     public void getTodoWithAnExistingTodo() {
         long id = 0L;
-        Todo newTodo = TodoBuilder.aTodo(0L, "title").withContent(Optional.of("content")).build();
+        Todo newTodo = Todo.Builder.aTodo(0L, "title").withContent(Optional.of("content")).build();
         Optional<Todo> expectedTodo = Optional.of(newTodo);
 
         dummyTodoDAO.createTodo(newTodo);

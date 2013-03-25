@@ -9,7 +9,6 @@ import fr.blemale.dropwizard.todo.api.todo.external.ExternalTodoList;
 import fr.blemale.dropwizard.todo.api.todo.request.TodoCreationRequest;
 import fr.blemale.dropwizard.todo.api.todo.request.TodoUpdateRequest;
 import fr.blemale.dropwizard.todo.core.Todo;
-import fr.blemale.dropwizard.todo.core.TodoBuilder;
 import fr.blemale.dropwizard.todo.jdbi.TodoDAO;
 import org.junit.After;
 import org.junit.Before;
@@ -41,7 +40,7 @@ public class TodoResourceTest {
 
     @Test
     public void getTodos() {
-        List<Todo> todos = ImmutableList.of(TodoBuilder.aTodo(0L, "title").build());
+        List<Todo> todos = ImmutableList.of(Todo.Builder.aTodo(0L, "title").build());
         ExternalTodoList expectedTodos = new ExternalTodoList.Mapper().fromTodoList(todos);
         when(this.todoDAO.getTodos()).thenReturn(todos);
 
@@ -53,7 +52,7 @@ public class TodoResourceTest {
     @Test
     public void createTodo() {
         TodoCreationRequest todoCreationRequest = new TodoCreationRequest("title", null);
-        Todo todo = TodoBuilder.aTodo(0L, "title").build();
+        Todo todo = Todo.Builder.aTodo(0L, "title").build();
         ExternalTodoLight expectedTodo = new ExternalTodoLight.Mapper().fromTodo(todo);
         when(this.todoDAO.createTodo(todo)).thenReturn(todo);
 
@@ -65,7 +64,7 @@ public class TodoResourceTest {
     @Test
     public void updateTodoWithAnExistingTodo() {
         TodoUpdateRequest todoCreationRequest = new TodoUpdateRequest("title", null);
-        Todo todo = TodoBuilder.aTodo(0L, "title").build();
+        Todo todo = Todo.Builder.aTodo(0L, "title").build();
         ExternalTodoLight expectedTodo = new ExternalTodoLight.Mapper().fromTodo(todo);
         when(this.todoDAO.updateTodo(todo)).thenReturn(Optional.of(todo));
 
@@ -77,7 +76,7 @@ public class TodoResourceTest {
     @Test(expected = WebApplicationException.class)
     public void updateTodoWithANonExistingTodo() {
         TodoUpdateRequest todoCreationRequest = new TodoUpdateRequest("title", null);
-        Todo todo = TodoBuilder.aTodo(0L, "title").build();
+        Todo todo = Todo.Builder.aTodo(0L, "title").build();
         when(this.todoDAO.updateTodo(todo)).thenReturn(Optional.<Todo>absent());
 
         this.todoResource.updateTodo(new LongParam("0"), todoCreationRequest);
@@ -86,7 +85,7 @@ public class TodoResourceTest {
     @Test
     public void getTodoWithAnId() {
         long id = 0L;
-        Todo todo = TodoBuilder.aTodo(id, "title").build();
+        Todo todo = Todo.Builder.aTodo(id, "title").build();
         ExternalTodo expectedTodo = new ExternalTodo.Mapper().fromTodo(todo);
         when(this.todoDAO.getTodo(id)).thenReturn(Optional.of(todo));
 
