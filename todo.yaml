@@ -1,20 +1,22 @@
 password: "pwd"
 
 http:
-    rootPath: "/api/*"
+  rootPath: "/api/*"
 
 database:
-    database:
-      driverClass: org.postgresql.Driver
-      user: pg-user
-      password: pg-user
-      url: jdbc:postgresql://localhost
-      properties:
-        charSet: UTF-8
-      maxWaitForConnection: 1s
-      validationQuery: "/* MyService Health Check */ SELECT 1"
-      minSize: 8
-      maxSize: 32
-      checkConnectionWhileIdle: false
-      checkConnectionHealthWhenIdleFor: 10s
-      closeConnectionIfIdleFor: 1 minute
+  driverClass: org.postgresql.Driver
+  user: postgres
+  password: admin
+  url: jdbc:postgresql://localhost:5432/TodoDB
+  properties:
+    charSet: UTF-8
+  maxWaitForConnection: 1s
+  validationQuery: "/* MyService Health Check */ SELECT 1"
+  minSize: 8
+  maxSize: 32
+  checkConnectionWhileIdle: false
+  checkConnectionHealthWhenIdleFor: 10s
+  closeConnectionIfIdleFor: 1 minute
+
+logging:
+  level: DEBUG
