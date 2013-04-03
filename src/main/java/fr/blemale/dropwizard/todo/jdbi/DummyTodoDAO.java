@@ -14,21 +14,22 @@ public class DummyTodoDAO implements TodoDAO {
     private final AtomicLong currentId = new AtomicLong(0L);
 
     @Override
-    public Todo createTodo(Todo todo) {
+    public Long createTodo(Todo todo) {
         Todo newTodo = Todo.Builder.aTodo(todo).withId(currentId.getAndIncrement()).build();
         todoStore.put(newTodo.getId(), newTodo);
-        return newTodo;
+        return newTodo.getId();
     }
 
     @Override
-    public Optional<Todo> updateTodo(Todo todo) {
+    public int updateTodo(Todo todo) {
         Optional<Todo> currentTodo = Optional.fromNullable(todoStore.remove(todo.getId()));
         if (currentTodo.isPresent()) {
             todoStore.put(todo.getId(), todo);
-            return Optional.of(todo);
+            return 1;
         } else {
-            return Optional.absent();
+            return 0;
         }
+
     }
 
     @Override

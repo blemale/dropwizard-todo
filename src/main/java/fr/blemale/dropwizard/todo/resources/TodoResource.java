@@ -38,8 +38,8 @@ public class TodoResource {
     @Timed
     @POST
     public ExternalTodoLight createTodo(@Auth User user, @Valid TodoCreationRequest todoCreationRequest) {
-        Todo createdTodo = this.todoDAO.createTodo(new TodoCreationRequest.Mapper().toTodo(todoCreationRequest));
-        return new ExternalTodoLight.Mapper().fromTodo(createdTodo);
+        Long createdTodoId = this.todoDAO.createTodo(new TodoCreationRequest.Mapper().toTodo(todoCreationRequest));
+        return new ExternalTodoLight.Mapper().fromId(createdTodoId);
     }
 
     @Timed
@@ -57,12 +57,10 @@ public class TodoResource {
     @Timed
     @Path("{id}")
     @PUT
-    public ExternalTodoLight updateTodo(@Auth User user, @PathParam("id") LongParam id, @Valid TodoUpdateRequest todoUpdateRequest) {
+    public void updateTodo(@Auth User user, @PathParam("id") LongParam id, @Valid TodoUpdateRequest todoUpdateRequest) {
         Todo updatedTodo = new TodoUpdateRequest.Mapper().toTodo(id.get(), todoUpdateRequest);
-        Optional<Todo> todo = this.todoDAO.updateTodo(updatedTodo);
-        if (todo.isPresent()) {
-            return new ExternalTodoLight.Mapper().fromTodo(todo.get());
-        } else {
+        int nbRowUpdated = this.todoDAO.updateTodo(updatedTodo);
+        if (nbRowUpdated == 0) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
     }

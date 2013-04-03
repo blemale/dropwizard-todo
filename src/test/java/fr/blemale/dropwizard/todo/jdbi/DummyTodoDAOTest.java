@@ -31,9 +31,9 @@ public class DummyTodoDAOTest {
         Todo newTodo = Todo.Builder.aTodo(1L, "title").withContent(Optional.of("content")).build();
         Todo expectedTodo = Todo.Builder.aTodo(newTodo).withId(0L).build();
 
-        Todo actualTodo = dummyTodoDAO.createTodo(newTodo);
+        Long actualTodoId = dummyTodoDAO.createTodo(newTodo);
 
-        assertThat("creating a new Todo returns the same todo with a valid id", actualTodo, is(expectedTodo));
+        assertThat("creating a new Todo returns a valid id", actualTodoId, is(expectedTodo.getId()));
     }
 
     @Test
@@ -43,9 +43,9 @@ public class DummyTodoDAOTest {
         Optional<Todo> expectedTodo = Optional.of(updatedTodo);
 
         dummyTodoDAO.createTodo(newTodo);
-        Optional<Todo> actualTodo = dummyTodoDAO.updateTodo(updatedTodo);
+        int nbRowUpdated = dummyTodoDAO.updateTodo(updatedTodo);
 
-        assertThat("updating an existing Todo returns a present updated Todo", actualTodo, is(expectedTodo));
+        assertThat("updating an existing Todo returns 1", nbRowUpdated, is(1));
     }
 
 
@@ -54,9 +54,9 @@ public class DummyTodoDAOTest {
         Todo updatedTodo = Todo.Builder.aTodo(0L, "updatedTitle").withContent(Optional.of("updatedContent")).build();
         Optional<Todo> expectedTodo = Optional.absent();
 
-        Optional<Todo> actualTodo = dummyTodoDAO.updateTodo(updatedTodo);
+        int nbRowUpdated = dummyTodoDAO.updateTodo(updatedTodo);
 
-        assertThat("updating a non existing Todo returns an absent Todo", actualTodo, is(expectedTodo));
+        assertThat("updating a non existing Todo returns 0", nbRowUpdated, is(0));
     }
 
     @Test

@@ -13,24 +13,16 @@ public class ExternalTodoLight {
     private final long id;
     @NotNull
     @JsonProperty
-    private final String title;
-    @NotNull
-    @JsonProperty
     private final String selfUrl;
 
     @JsonCreator
-    public ExternalTodoLight(@JsonProperty("id") long id, @JsonProperty("title") String title, @JsonProperty("selfUrl") String selfUrl) {
+    public ExternalTodoLight(@JsonProperty("id") long id, @JsonProperty("selfUrl") String selfUrl) {
         this.id = id;
-        this.title = title;
         this.selfUrl = selfUrl;
     }
 
     public long getId() {
         return id;
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     public String getSelfUrl() {
@@ -46,24 +38,22 @@ public class ExternalTodoLight {
 
         if (id != that.id) return false;
         if (!selfUrl.equals(that.selfUrl)) return false;
-        return title.equals(that.title);
 
+        return true;
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + title.hashCode();
         result = 31 * result + selfUrl.hashCode();
         return result;
     }
 
     public static class Mapper {
-        public ExternalTodoLight fromTodo(Todo todo) {
+        public ExternalTodoLight fromId(long id) {
             return new ExternalTodoLight(
-                    todo.getId(),
-                    todo.getTitle(),
-                    UriBuilder.fromResource(TodoResource.class).path(TodoResource.class, "getTodo").build(todo.getId()).getPath());
+                    id,
+                    UriBuilder.fromResource(TodoResource.class).path(TodoResource.class, "getTodo").build(id).getPath());
         }
     }
 }

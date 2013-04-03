@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
 public class ExternalTodoLightTest {
     @Test
     public void producesTheExpectedJson() throws Exception {
-        ExternalTodoLight externalTodoLight = new ExternalTodoLight(1L, "title", "selfUrl");
+        ExternalTodoLight externalTodoLight = new ExternalTodoLight(1L, "selfUrl");
 
         assertThat("rendering a externalTodoLight as JSON produces a valid API representation",
                 asJson(externalTodoLight),

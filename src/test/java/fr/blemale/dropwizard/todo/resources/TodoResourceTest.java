@@ -9,6 +9,7 @@ import fr.blemale.dropwizard.todo.api.todo.external.ExternalTodoList;
 import fr.blemale.dropwizard.todo.api.todo.request.TodoCreationRequest;
 import fr.blemale.dropwizard.todo.api.todo.request.TodoUpdateRequest;
 import fr.blemale.dropwizard.todo.core.Todo;
+import fr.blemale.dropwizard.todo.core.User;
 import fr.blemale.dropwizard.todo.jdbi.TodoDAO;
 import org.junit.After;
 import org.junit.Before;
@@ -19,8 +20,7 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class TodoResourceTest {
     private TodoDAO todoDAO;
@@ -40,66 +40,72 @@ public class TodoResourceTest {
 
     @Test
     public void getTodos() {
+        User user = User.Builder.anUser("user").build();
         List<Todo> todos = ImmutableList.of(Todo.Builder.aTodo(0L, "title").build());
         ExternalTodoList expectedTodos = new ExternalTodoList.Mapper().fromTodoList(todos);
         when(this.todoDAO.getTodos()).thenReturn(todos);
 
-        ExternalTodoList actualTodos = this.todoResource.getTodos();
+        ExternalTodoList actualTodos = this.todoResource.getTodos(user);
 
         assertThat("getting todos produces an ExternalTodoList with expected todos inside", actualTodos, is(expectedTodos));
     }
 
     @Test
     public void createTodo() {
+        User user = User.Builder.anUser("user").build();
         TodoCreationRequest todoCreationRequest = new TodoCreationRequest("title", null);
         Todo todo = Todo.Builder.aTodo(0L, "title").build();
-        ExternalTodoLight expectedTodo = new ExternalTodoLight.Mapper().fromTodo(todo);
-        when(this.todoDAO.createTodo(todo)).thenReturn(todo);
+        ExternalTodoLight expectedTodo = new ExternalTodoLight.Mapper().fromId(0L);
+        when(this.todoDAO.createTodo(todo)).thenReturn(0L);
 
-        ExternalTodoLight actualTodo = this.todoResource.createTodo(todoCreationRequest);
+        ExternalTodoLight actualTodo = this.todoResource.createTodo(user, todoCreationRequest);
 
         assertThat("create a todo produces an ExternalTodoLight", actualTodo, is(expectedTodo));
     }
 
     @Test
     public void updateTodoWithAnExistingTodo() {
+        User user = User.Builder.anUser("user").build();
         TodoUpdateRequest todoCreationRequest = new TodoUpdateRequest("title", null);
         Todo todo = Todo.Builder.aTodo(0L, "title").build();
-        ExternalTodoLight expectedTodo = new ExternalTodoLight.Mapper().fromTodo(todo);
-        when(this.todoDAO.updateTodo(todo)).thenReturn(Optional.of(todo));
+        ExternalTodoLight expectedTodo = new ExternalTodoLight.Mapper().fromId(0L);
+        when(this.todoDAO.updateTodo(todo)).thenReturn(1);
 
-        ExternalTodoLight actualTodo = this.todoResource.updateTodo(new LongParam("0"), todoCreationRequest);
+        this.todoResource.updateTodo(user, new LongParam("0"), todoCreationRequest);
 
-        assertThat("create a todo produces an ExternalTodoLight", actualTodo, is(expectedTodo));
+        verify(this.todoDAO).updateTodo(todo);
     }
 
     @Test(expected = WebApplicationException.class)
     public void updateTodoWithANonExistingTodo() {
+        User user = User.Builder.anUser("user").build();
         TodoUpdateRequest todoCreationRequest = new TodoUpdateRequest("title", null);
         Todo todo = Todo.Builder.aTodo(0L, "title").build();
-        when(this.todoDAO.updateTodo(todo)).thenReturn(Optional.<Todo>absent());
+        when(this.todoDAO.updateTodo(todo)).thenReturn(0);
 
-        this.todoResource.updateTodo(new LongParam("0"), todoCreationRequest);
+        this.todoResource.updateTodo(user, new LongParam("0"), todoCreationRequest);
     }
 
     @Test
     public void getTodoWithAnId() {
+        User user = User.Builder.anUser("user").build();
         long id = 0L;
         Todo todo = Todo.Builder.aTodo(id, "title").build();
         ExternalTodo expectedTodo = new ExternalTodo.Mapper().fromTodo(todo);
         when(this.todoDAO.getTodo(id)).thenReturn(Optional.of(todo));
 
-        ExternalTodo actualTodo = this.todoResource.getTodo(new LongParam(Long.toString(id)));
+        ExternalTodo actualTodo = this.todoResource.getTodo(user, new LongParam(Long.toString(id)));
 
         assertThat("get a todo with an existing id produces an ExternalTodo", actualTodo, is(expectedTodo));
     }
 
     @Test(expected = WebApplicationException.class)
     public void getTodoWithANonId() {
+        User user = User.Builder.anUser("user").build();
         long id = 0L;
         when(this.todoDAO.getTodo(id)).thenReturn(Optional.<Todo>absent());
 
-        this.todoResource.getTodo(new LongParam(Long.toString(id)));
+        this.todoResource.getTodo(user, new LongParam(Long.toString(id)));
     }
 
 

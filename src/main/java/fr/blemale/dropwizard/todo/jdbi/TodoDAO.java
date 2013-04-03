@@ -6,9 +6,9 @@ import fr.blemale.dropwizard.todo.core.Todo;
 import java.util.List;
 
 public interface TodoDAO {
-    Todo createTodo(Todo todo);
+    Long createTodo(Todo todo);
 
-    Optional<Todo> updateTodo(Todo todo);
+    int updateTodo(Todo todo);
 
     List<Todo> getTodos();
 

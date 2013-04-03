@@ -14,8 +14,8 @@ public class ExternalTodoListTest {
     public void producesTheExpectedJson() throws Exception {
         ExternalTodoList externalTodoList =
                 new ExternalTodoList(Lists.newArrayList(
-                        new ExternalTodoLight(1L, "title1", "selfUrl1"),
-                        new ExternalTodoLight(2L, "title2", "selfUrl2")));
+                        new ExternalTodo(1L, "title1", "content1", "selfUrl1"),
+                        new ExternalTodo(2L, "title2", "content2", "selfUrl2")));
 
         assertThat("rendering a externalTodoList as JSON produces a valid API representation",
                 asJson(externalTodoList),
