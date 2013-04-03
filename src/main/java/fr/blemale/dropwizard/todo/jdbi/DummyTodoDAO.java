@@ -33,7 +33,7 @@ public class DummyTodoDAO implements TodoDAO {
     }
 
     @Override
-    public List<Todo> getTodos() {
+    public ImmutableList<Todo> getTodos() {
         return ImmutableList.copyOf(todoStore.values());
     }
 

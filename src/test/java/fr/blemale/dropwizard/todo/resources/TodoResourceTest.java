@@ -41,7 +41,7 @@ public class TodoResourceTest {
     @Test
     public void getTodos() {
         User user = User.Builder.anUser("user").build();
-        List<Todo> todos = ImmutableList.of(Todo.Builder.aTodo(0L, "title").build());
+        ImmutableList<Todo> todos = ImmutableList.of(Todo.Builder.aTodo(0L, "title").build());
         ExternalTodoList expectedTodos = new ExternalTodoList.Mapper().fromTodoList(todos);
         when(this.todoDAO.getTodos()).thenReturn(todos);
 

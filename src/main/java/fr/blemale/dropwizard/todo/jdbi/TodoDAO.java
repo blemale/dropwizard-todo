@@ -1,6 +1,7 @@
 package fr.blemale.dropwizard.todo.jdbi;
 
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import fr.blemale.dropwizard.todo.core.Todo;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface TodoDAO {
 
     int updateTodo(Todo todo);
 
-    List<Todo> getTodos();
+    ImmutableList<Todo> getTodos();
 
     Optional<Todo> getTodo(long id);
 }
