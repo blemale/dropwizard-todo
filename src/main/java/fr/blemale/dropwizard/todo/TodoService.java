@@ -4,7 +4,9 @@ import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.auth.basic.BasicAuthProvider;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
+import com.yammer.dropwizard.db.DatabaseConfiguration;
 import com.yammer.dropwizard.jdbi.DBIFactory;
+import com.yammer.dropwizard.migrations.MigrationsBundle;
 import fr.blemale.dropwizard.todo.auth.DummyAuthenticator;
 import fr.blemale.dropwizard.todo.core.User;
 import fr.blemale.dropwizard.todo.jdbi.JDBITodoDAO;
@@ -20,6 +22,13 @@ public class TodoService extends Service<TodoConfiguration> {
     @Override
     public void initialize(Bootstrap<TodoConfiguration> bootstrap) {
         bootstrap.setName("todo");
+
+        bootstrap.addBundle(new MigrationsBundle<TodoConfiguration>() {
+            @Override
+            public DatabaseConfiguration getDatabaseConfiguration(TodoConfiguration configuration) {
+                return configuration.getDatabaseConfiguration();
+            }
+        });
     }
 
     @Override
