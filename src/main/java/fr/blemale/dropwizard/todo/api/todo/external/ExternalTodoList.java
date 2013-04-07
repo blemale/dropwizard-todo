@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import fr.blemale.dropwizard.todo.core.Todo;
 
 import javax.validation.constraints.NotNull;
+import java.net.URI;
 import java.util.List;
 
 public class ExternalTodoList {
@@ -40,12 +41,19 @@ public class ExternalTodoList {
         return todos.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return "ExternalTodoList{" +
+                "todos=" + todos +
+                '}';
+    }
+
     public static class Mapper {
-        public ExternalTodoList fromTodoList(List<Todo> todos) {
+        public ExternalTodoList fromTodoList(URI baseUri, List<Todo> todos) {
             ExternalTodo.Mapper mapper = new ExternalTodo.Mapper();
             List<ExternalTodo> externalTodos = Lists.newArrayList();
             for (Todo todo : todos) {
-                externalTodos.add(mapper.fromTodo(todo));
+                externalTodos.add(mapper.fromTodo(baseUri, todo));
             }
             return new ExternalTodoList(ImmutableList.copyOf(externalTodos));
         }

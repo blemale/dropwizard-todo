@@ -7,6 +7,7 @@ import fr.blemale.dropwizard.todo.resources.TodoResource;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 
 public class ExternalTodo {
     @NotNull
@@ -68,13 +69,23 @@ public class ExternalTodo {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "ExternalTodo{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", selfUrl='" + selfUrl + '\'' +
+                '}';
+    }
+
     public static class Mapper {
-        public ExternalTodo fromTodo(Todo todo) {
+        public ExternalTodo fromTodo(URI baseUri, Todo todo) {
             return new ExternalTodo(
                     todo.getId(),
                     todo.getTitle(),
                     todo.getContent().or(""),
-                    UriBuilder.fromResource(TodoResource.class).path(TodoResource.class, "getTodo").build(todo.getId()).getPath());
+                    UriBuilder.fromUri(baseUri).path(TodoResource.class).path(TodoResource.class, "getTodo").build(todo.getId()).getPath());
         }
     }
 }

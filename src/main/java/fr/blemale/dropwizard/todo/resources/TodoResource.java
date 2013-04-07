@@ -15,8 +15,10 @@ import fr.blemale.dropwizard.todo.jdbi.TodoDAO;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 @Path("/todos")
 @Produces(MediaType.APPLICATION_JSON)
@@ -31,24 +33,24 @@ public class TodoResource {
 
     @Timed
     @GET
-    public ExternalTodoList getTodos(@Auth User user) {
-        return new ExternalTodoList.Mapper().fromTodoList(this.todoDAO.getTodos());
+    public ExternalTodoList getTodos(@Context UriInfo uriInfo, @Auth User user) {
+        return new ExternalTodoList.Mapper().fromTodoList(uriInfo.getBaseUri(), this.todoDAO.getTodos());
     }
 
     @Timed
     @POST
-    public ExternalTodoLight createTodo(@Auth User user, @Valid TodoCreationRequest todoCreationRequest) {
+    public ExternalTodoLight createTodo(@Context UriInfo uriInfo, @Auth User user, @Valid TodoCreationRequest todoCreationRequest) {
         Long createdTodoId = this.todoDAO.createTodo(new TodoCreationRequest.Mapper().toTodo(todoCreationRequest));
-        return new ExternalTodoLight.Mapper().fromId(createdTodoId);
+        return new ExternalTodoLight.Mapper().fromId(uriInfo.getBaseUri(),createdTodoId);
     }
 
     @Timed
     @Path("{id}")
     @GET
-    public ExternalTodo getTodo(@Auth User user, @PathParam("id") LongParam id) {
+    public ExternalTodo getTodo(@Context UriInfo uriInfo, @Auth User user, @PathParam("id") LongParam id) {
         Optional<Todo> todo = this.todoDAO.getTodo(id.get());
         if (todo.isPresent()) {
-            return new ExternalTodo.Mapper().fromTodo(todo.get());
+            return new ExternalTodo.Mapper().fromTodo(uriInfo.getBaseUri(),todo.get());
         } else {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
@@ -57,7 +59,7 @@ public class TodoResource {
     @Timed
     @Path("{id}")
     @PUT
-    public void updateTodo(@Auth User user, @PathParam("id") LongParam id, @Valid TodoUpdateRequest todoUpdateRequest) {
+    public void updateTodo(@Context UriInfo uriInfo, @Auth User user, @PathParam("id") LongParam id, @Valid TodoUpdateRequest todoUpdateRequest) {
         Todo updatedTodo = new TodoUpdateRequest.Mapper().toTodo(id.get(), todoUpdateRequest);
         int nbRowUpdated = this.todoDAO.updateTodo(updatedTodo);
         if (nbRowUpdated == 0) {

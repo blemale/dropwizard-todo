@@ -2,11 +2,11 @@ package fr.blemale.dropwizard.todo.api.todo.external;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fr.blemale.dropwizard.todo.core.Todo;
 import fr.blemale.dropwizard.todo.resources.TodoResource;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 
 public class ExternalTodoLight {
     @JsonProperty
@@ -50,10 +50,10 @@ public class ExternalTodoLight {
     }
 
     public static class Mapper {
-        public ExternalTodoLight fromId(long id) {
+        public ExternalTodoLight fromId(URI baseUri, long id) {
             return new ExternalTodoLight(
                     id,
-                    UriBuilder.fromResource(TodoResource.class).path(TodoResource.class, "getTodo").build(id).getPath());
+                    UriBuilder.fromUri(baseUri).path(TodoResource.class).path(TodoResource.class, "getTodo").build(id).getPath());
         }
     }
 }
