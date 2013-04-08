@@ -1,4 +1,4 @@
-package fr.blemale.dropwizard.todo.api.todo.external;
+package fr.blemale.dropwizard.todo.api.external;
 
 import com.google.common.collect.Lists;
 import org.junit.Test;

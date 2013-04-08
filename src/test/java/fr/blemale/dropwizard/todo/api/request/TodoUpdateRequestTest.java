@@ -1,4 +1,4 @@
-package fr.blemale.dropwizard.todo.api.todo.request;
+package fr.blemale.dropwizard.todo.api.request;
 
 import org.junit.Test;
 
