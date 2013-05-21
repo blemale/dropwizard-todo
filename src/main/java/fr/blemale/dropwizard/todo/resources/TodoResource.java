@@ -13,6 +13,7 @@ import fr.blemale.dropwizard.todo.core.Todo;
 import fr.blemale.dropwizard.todo.core.User;
 import fr.blemale.dropwizard.todo.jdbi.TodoDAO;
 
+import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -27,6 +28,7 @@ public class TodoResource {
 
     private final TodoDAO todoDAO;
 
+    @Inject
     public TodoResource(TodoDAO todoDAO) {
         this.todoDAO = todoDAO;
     }
@@ -41,7 +43,7 @@ public class TodoResource {
     @POST
     public ExternalTodoLight createTodo(@Context UriInfo uriInfo, @Auth User user, @Valid TodoCreationRequest todoCreationRequest) {
         Long createdTodoId = this.todoDAO.createTodo(new TodoCreationRequest.Mapper().toTodo(todoCreationRequest));
-        return new ExternalTodoLight.Mapper().fromId(uriInfo.getBaseUri(),createdTodoId);
+        return new ExternalTodoLight.Mapper().fromId(uriInfo.getBaseUri(), createdTodoId);
     }
 
     @Timed
@@ -50,7 +52,7 @@ public class TodoResource {
     public ExternalTodo getTodo(@Context UriInfo uriInfo, @Auth User user, @PathParam("id") LongParam id) {
         Optional<Todo> todo = this.todoDAO.getTodo(id.get());
         if (todo.isPresent()) {
-            return new ExternalTodo.Mapper().fromTodo(uriInfo.getBaseUri(),todo.get());
+            return new ExternalTodo.Mapper().fromTodo(uriInfo.getBaseUri(), todo.get());
         } else {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }

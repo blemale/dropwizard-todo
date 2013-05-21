@@ -5,14 +5,9 @@ import com.yammer.dropwizard.auth.basic.BasicAuthProvider;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.db.DatabaseConfiguration;
-import com.yammer.dropwizard.jdbi.DBIFactory;
 import com.yammer.dropwizard.migrations.MigrationsBundle;
-import fr.blemale.dropwizard.todo.auth.DummyAuthenticator;
-import fr.blemale.dropwizard.todo.core.User;
-import fr.blemale.dropwizard.todo.jdbi.JDBITodoDAO;
-import fr.blemale.dropwizard.todo.jdbi.TodoDAO;
+import dagger.ObjectGraph;
 import fr.blemale.dropwizard.todo.resources.TodoResource;
-import org.skife.jdbi.v2.DBI;
 
 public class TodoService extends Service<TodoConfiguration> {
     public static void main(String[] args) throws Exception {
@@ -33,12 +28,8 @@ public class TodoService extends Service<TodoConfiguration> {
 
     @Override
     public void run(TodoConfiguration configuration, Environment environment) throws Exception {
-        final String password = configuration.getPassword();
-        environment.addProvider(new BasicAuthProvider<User>(new DummyAuthenticator(password), "Protect Area"));
-
-        final DBIFactory factory = new DBIFactory();
-        final DBI jdbi = factory.build(environment, configuration.getDatabaseConfiguration(), "postgresql");
-        final TodoDAO todoDAO = jdbi.onDemand(JDBITodoDAO.class);
-        environment.addResource(new TodoResource(todoDAO));
+        ObjectGraph objectGraph = ObjectGraph.create(new TodoModule(configuration, environment));
+        environment.addProvider(objectGraph.get(BasicAuthProvider.class));
+        environment.addResource(objectGraph.get(TodoResource.class));
     }
 }
